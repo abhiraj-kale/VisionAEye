@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'package:visionaeye/objectdetection.dart';
-import 'package:visionaeye/od2.dart';
 import 'package:visionaeye/od3.dart';
 
 class CameraScreen extends StatefulWidget {
