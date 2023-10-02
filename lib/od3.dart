@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:tflite/tflite.dart';
 
-
 typedef void Callback(List<dynamic> list, int h, int w);
 
 class CameraFeed extends StatefulWidget {
@@ -14,7 +13,7 @@ class CameraFeed extends StatefulWidget {
   CameraFeed(this.camera, this.setRecognitions);
 
   @override
-  _CameraFeedState createState() => new _CameraFeedState();
+  _CameraFeedState createState() => _CameraFeedState();
 }
 
 class _CameraFeedState extends State<CameraFeed> {
@@ -28,7 +27,7 @@ class _CameraFeedState extends State<CameraFeed> {
     if (widget.camera == null) {
       print('No Cameras Found.');
     } else {
-      controller = new CameraController(
+      controller = CameraController(
         widget.camera,
         ResolutionPreset.high,
       );
@@ -42,7 +41,9 @@ class _CameraFeedState extends State<CameraFeed> {
           if (!isDetecting) {
             isDetecting = true;
             Tflite.detectObjectOnFrame(
-              bytesList: img.planes.map((plane) {return plane.bytes;}).toList(),
+              bytesList: img.planes.map((plane) {
+                return plane.bytes;
+              }).toList(),
               model: "SSDMobileNet",
               imageHeight: img.height,
               imageWidth: img.width,
@@ -145,16 +146,16 @@ class BoundingBox extends StatelessWidget {
           width: w,
           height: h,
           child: Container(
-            padding: EdgeInsets.only(top: 5.0, left: 5.0),
+            padding: const EdgeInsets.only(top: 5.0, left: 5.0),
             decoration: BoxDecoration(
               border: Border.all(
-                color: Color.fromRGBO(37, 213, 253, 1.0),
+                color: const Color.fromRGBO(37, 213, 253, 1.0),
                 width: 3.0,
               ),
             ),
             child: Text(
               "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color.fromRGBO(37, 213, 253, 1.0),
                 fontSize: 14.0,
                 fontWeight: FontWeight.bold,
@@ -182,15 +183,14 @@ class _OD3State extends State<OD3> {
   List<dynamic>? _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;
-  initCameras() async {
-
-  }
+  initCameras() async {}
   loadTfModel() async {
     await Tflite.loadModel(
       model: "assets/ssd_mobilenet.tflite",
       labels: "assets/ssd_mobilenet.txt",
     );
   }
+
   /* 
   The set recognitions function assigns the values of recognitions, imageHeight and width to the variables defined here as callback
   */
@@ -203,7 +203,7 @@ class _OD3State extends State<OD3> {
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     loadTfModel();
   }
@@ -212,9 +212,9 @@ class _OD3State extends State<OD3> {
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Real Time Object Detection"),
-      ),
+      // appBar: AppBar(
+      //   title: Text("Real Time Object Detection"),
+      // ),
       body: Stack(
         children: <Widget>[
           CameraFeed(widget.camera, setRecognitions),
